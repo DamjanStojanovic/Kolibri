@@ -166,6 +166,18 @@ label + span > input:invalid + span.invalidation_marker {
         transform-origin:          45% 45%;
     }
 }
+
+.kolibri-logo-static {                                /* works for both svg file or svg element */
+    .wing {
+        animation-name:            kolibri-flapping;
+        animation-duration:        .2s;
+        animation-iteration-count: 15;
+        animation-direction:       reverse;
+        animation-timing-function: ease-in;
+        transform-origin:          45% 45%;
+    }
+}
+
 @keyframes kolibri_fly_in {
 	0% {
 		transform: scaleX(-1)  scale(0.4) translateX(400%) rotate(-30deg);

@@ -5,33 +5,35 @@ import { KOLIBRI_LOGO_SVG } from "../../../kolibri/style/kolibriStyle.js";
 
 export { AnimationPage };
 
-const PAGE_CLASS = "animation";
+const PAGE_CLASS = "animation-page";
 
 const AnimationPage = () => Page({
     titleText: "Kolibri Backflip Animation",
     activationMs: 1000,
-    passivationMs: 1000,
+    passivationMs: 2000, // Matches the fade-out duration
     pageClass: PAGE_CLASS,
     styleElement: /** @type { HTMLStyleElement } */ styleElement,
     contentElement: /** @type { HTMLElement } */ contentElement,
+    onBootstrap,
 });
 
 const [contentElement] = dom(`
     <div class="${PAGE_CLASS}">
         <header>
-            <div class="kolibri-logo-container">
-                <div class="kolibri-logo">
-                    ${KOLIBRI_LOGO_SVG}
-                </div>
+            <div class="kolibri-logo-static fly-in" style="width:clamp(10rem, 30cqw, 20rem);">
+                ${KOLIBRI_LOGO_SVG}
             </div>
             <h1>Kolibri Backflip Animation</h1>
+            <div class="subtitle">Backflip and Flapping Wings</div>
         </header>
         <main class="prosa">
             <section>
-                <h2>Backflip and Flapping Wings</h2>
+                <h2>Interactive Backflip</h2>
+                <p>Press the "Backflip" button to make the Kolibri perform a single backflip.</p>
             </section>
             <section class="buttons">
-                <a class="btn primary glow" ${href(URI_HASH_HOME)}>Back to Home</a>
+                <button class="btn primary glow backflip-button">Backflip</button>
+                <a class="btn accent glow" ${href(URI_HASH_HOME)}>Back to Home</a>
             </section>
         </main>
     </div>
@@ -39,77 +41,56 @@ const [contentElement] = dom(`
 
 const [styleElement] = dom(`
     <style data-style-id="${PAGE_CLASS}">
-        .${PAGE_CLASS} {
-            text-align: center;
-        }
-
-        .kolibri-logo-container {
-            position: relative;
-            width: 100%;
-            height: 400px;
-            overflow: hidden;
-        }
-
-        .kolibri-logo {
-            position: absolute;
-            top: 50%;
-            left: -10%;
-            transform: translateY(-50%);
-            animation: flyBackflip 6s ease-in-out infinite;
-        }
-
-        @keyframes flyBackflip {
-            0% {
-                left: -10%;
-                transform: translateY(-50%) rotate(0deg) scale(1);
-            }
-            50% {
-                left: 50%;
-                transform: translateY(-50%) rotate(360deg) scale(1.2);
-            }
-            100% {
-                left: 110%;
-                transform: translateY(-50%) rotate(720deg) scale(1);
-            }
-        }
-
-        .kolibri-logo svg {
-            animation: flapWings 0.5s ease-in-out infinite;
-        }
-
-        @keyframes flapWings {
-            0%, 100% {
-                transform: rotate(0deg);
-            }
-            50% {
-                transform: rotate(10deg);
-            }
-        }
-
-        header h1 {
-            margin-top: 1rem;
-            font-size: 2rem;
-        }
-
-        .prosa {
-            padding: 1rem;
-        }
-
-        .buttons {
-            margin-top: 1rem;
-        }
-
-        .btn {
-            padding: 0.5em 1em;
-            text-decoration: none;
-            color: white;
-            background-color: #44aa88;
-            border-radius: 5px;
-            transition: transform 0.3s;
-        }
-
-        .btn:hover {
-            transform: scale(1.1);
-        }
+        @import "./animation.css";
     </style>
 `);
+
+function onBootstrap() {
+    const kolibri = document.querySelector(`.${PAGE_CLASS} .kolibri-logo-static`);
+    const backflipButton = document.querySelector(".backflip-button");
+    if (!kolibri || !backflipButton) return;
+
+    // Remove the fly-in class after animation ends
+    kolibri.addEventListener(
+        "animationend",
+        (event) => {
+            if (event.animationName === "animation_fly_in") {
+                kolibri.classList.remove("fly-in"); // Remove fly-in class
+            }
+        },
+        { once: true } // Run once to prevent future triggers
+    );
+
+    // Automatically perform one backflip after flying in
+    setTimeout(() => {
+        triggerBackflip(kolibri);
+    }, 3000); // Matches the fly-in duration (3s)
+
+    // Trigger backflip on button press
+    backflipButton.addEventListener("click", () => triggerBackflip(kolibri));
+}
+
+function triggerBackflip(kolibri) {
+    if (!kolibri) return;
+
+    // Add the backflip class
+    kolibri.classList.add("trigger-backflip");
+
+    // Remove the backflip class after animation ends to reset
+    kolibri.addEventListener(
+        "animationend",
+        (event) => {
+            if (event.animationName === "animation_single_backflip") {
+                kolibri.classList.remove("trigger-backflip");
+            }
+        },
+        { once: true } // Run once to prevent future triggers
+    );
+}
+
+function onPassivate() {
+    const page = document.querySelector(`.${PAGE_CLASS}`);
+    if (page) {
+        page.classList.add("passivate"); // Add the passivate class for fade-out
+    }
+}

@@ -9,70 +9,70 @@
 .animation-page .kolibri-logo-static {
     position: relative;
     transform-origin: center;
-    margin: 0 auto; /* Center the Kolibri */
+    margin: 0 auto;
 }
 
-/* Fly-in animation (first-time only) */
+/* Fly-in Animation (Nur wenn Seite neu geladen wird) */
 .animation-page .kolibri-logo-static.fly-in {
     animation: animation_fly_in 3s ease-out forwards;
 }
 
-/* Backflip animation */
+/* Backflip Animation */
 .animation-page .kolibri-logo-static.trigger-backflip {
     animation: animation_single_backflip 2s ease-in-out forwards;
 }
 
-/* Flapping wings */
+/* Bewegende Flügel */
 .animation-page .kolibri-logo-static .wing {
-    transform-origin: 45% 45%; /* Wing's joint */
+    transform-origin: 45% 45%;
     animation: kolibri_flapping 0.2s ease-in-out infinite;
 }
 
-/* Fly-in animation */
+/* Fly-in Animation */
 @keyframes animation_fly_in {
     0% {
-        transform: scaleX(-1) scale(0.4) translateX(400%) rotate(-30deg); /* Start off-screen */
+        transform: scaleX(-1) scale(0.4) translateX(400%) rotate(-30deg); /* Startet ausserhalb des Screens */
         opacity: 0;
     }
     60% {
-        transform: scale(0.6) translateX(300%) rotate(-30deg); /* Flying in, scaling up */
+        transform: scale(0.6) translateX(300%) rotate(-30deg); /* Hinein fliegen und grösser werden */
         opacity: 1;
     }
     100% {
-        transform: scale(1.0) translateX(0) rotate(0deg); /* Final resting position */
+        transform: scale(1.0) translateX(0) rotate(0deg); /* Finale Position */
     }
 }
 
-/* Single backflip animation */
+/* Backflip Animation */
 @keyframes animation_single_backflip {
     0% {
-        transform: rotate(0deg) scale(1); /* Starting position */
+        transform: rotate(0deg) scale(1); /* Start-Position */
     }
     50% {
-        transform: rotate(180deg) scale(1.2); /* Halfway through backflip */
+        transform: rotate(180deg) scale(1.2); /* Halber Backflip mit leichter Vergrösserung */
     }
     100% {
-        transform: rotate(360deg) scale(1); /* Full backflip */
+        transform: rotate(360deg) scale(1); /* Komplette 360 Grad Drehung */
     }
 }
 
 /* Flapping wings animation */
 @keyframes kolibri_flapping {
     0%, 100% {
-        transform: rotate(0deg); /* Default position */
+        transform: rotate(0deg); /* Normale Position */
     }
     50% {
-        transform: rotate(30deg); /* Wings move up */
+        transform: rotate(30deg); /* Flügel gehoben */
     }
 }
 
-/* Fade-out animation for exiting the page */
+/* Fade-out Animation beim verlassen der Seite */
 .animation-page.passivate .kolibri-logo-static,
 .animation-page.passivate .prosa {    
     animation: animation_fly_out 2s ease-in forwards;
 }
 
-/* Fly-out animation */
+/* Fly-out Animation */
 @keyframes animation_fly_out {
     0% {
         transform: translateY(0);
@@ -93,9 +93,10 @@
     width: 100%;
     height: 100%;
     pointer-events: none; /* Damit das Feuerwerk nicht mit anderen Elementen interagiert */
-    z-index: 1; /* Feuerwerk bleibt unter dem Kolibri */
+    z-index: 1; /* Feuerwerk bleibt über/vor dem Kolibri */
 }
 
+/* Die Animation steuert, wie das Feuerwerk erscheint, sich ausbreitet und wieder verschwindet. */
 @keyframes firework {
     0% {
         transform: translate(var(--x), var(--initialY));
@@ -109,23 +110,24 @@
     100% {
         width: var(--finalSize);
         opacity: 0;
-        visibility: hidden; /* Ensures the element is not interactable/rendered */
+        visibility: hidden;
     }
 }
 
+/* Jeder Feuerwerkskörper besteht aus einem Hauptobjekt und zwei weiteren (Pseudo-Elemente ::before und ::after), die die Partikel simulieren. */
 .firework,
 .firework::before,
 .firework::after {
-    --initialSize: 0.5vmin;
+    --initialSize: 0.5vmin; /* Anfangsgrösse der Explosion */
     --finalSize: 50vmin;
-    --particleSize: 2vmin;
+    --particleSize: 2vmin; /* Grösse der Partikel */
     --color1: yellow;
     --color2: khaki;
     --color3: white;
     --color4: lime;
     --color5: gold;
     --color6: mediumseagreen;
-    --y: -30vmin;
+    --y: -30vmin; /* Position */
     --x: -50%;
     --initialY: 60vmin;
     content: "";
@@ -134,9 +136,10 @@
     left: 50%;
     transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
     animation: firework 5s;
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards; /* Behält den Endzustand bei */
     width: var(--initialSize);
     aspect-ratio: 1;
+    /* Partikel, welche rund sind: */
     background: 
         radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 50% 0%,
         radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 50%,
@@ -162,10 +165,11 @@
         radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 85% 27%,
         radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 77% 37%,
         radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 60% 7%;
-    background-size: var(--initialSize) var(--initialSize);
-    background-repeat: no-repeat;
+    background-size: var(--initialSize) var(--initialSize); 
+    background-repeat: no-repeat; /* Keine Wiederholung */
 }
 
+/* Pseudo-Elemente erzeugen zusätzliche Partikel für das Feuerwerk */
 .firework::before {
     --x: -50%;
     --y: -50%;
@@ -180,6 +184,7 @@
     transform: translate(-50%, -50%) rotate(170deg) scale(1.15) rotateY(-30deg);
 }
 
+/* Zweites Feuerwerk */
 .firework:nth-child(2) {
     --x: 30vmin;
 }
@@ -199,6 +204,7 @@
     animation-delay: -0.25s;
 }
 
+/* Drittes Feuerwerk */
 .firework:nth-child(3) {
     --x: -30vmin;
     --y: -50vmin;
@@ -230,7 +236,6 @@
 button {
     box-shadow: none;
     background: transparent;
-    /*? Braucht es diese Linie? */
     border: none;
     transform-style: preserve-3d;
     padding: 0;
@@ -246,7 +251,6 @@ button {
     font-weight: 500;
     padding: 1rem 2rem;
     line-height: 2rem;
-    /** will-change nicht zu oft verwenden (greift die Performance an)! */
     will-change: transform, filter;
     float: none;
     margin: 0;
@@ -259,7 +263,6 @@ button {
     transform: rotateX(0deg) rotateY(0deg) scale(1);
     filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.3));
     font-weight: 600;
-    /*? Könnte noch wichtig sein...? */
     perspective-origin: 0 0;
     letter-spacing: 1;
     align-items: center;
@@ -275,12 +278,12 @@ button {
 }
 
 button a {
-    text-decoration: none; /* Remove underline */
-    color: inherit; /* Inherit the button's text color */
+    text-decoration: none;
+    color: inherit;
 }
 
 button a:hover, button a:focus {
-    text-decoration: none; /* Ensure no underline on hover or focus */
+    text-decoration: none;
 }
 
 .button__div {

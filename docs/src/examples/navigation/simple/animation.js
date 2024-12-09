@@ -7,6 +7,11 @@ export { AnimationPage };
 
 const PAGE_CLASS = "animation-page";
 
+/**
+ * Erstellt und lädt die AnimationPage
+ * @return { Page } Die AnimationPage-Instanz
+ * @constructor
+ */
 const AnimationPage = () => Page({
     titleText: "Kolibri Backflip Animation",
     activationMs: 1000,
@@ -14,9 +19,15 @@ const AnimationPage = () => Page({
     pageClass: PAGE_CLASS,
     styleElement: /** @type { HTMLStyleElement } */ styleElement,
     contentElement: /** @type { HTMLElement } */ contentElement,
-    onBootstrap,
+    onBootstrap
 });
 
+/**
+ * HTML-Struktur der AnimationPage
+ * Enthält header mit Kolibri, main mit Buttons und Text und den Firework-Container
+ * 
+ * @type {HTMLElement}
+ */
 const [contentElement] = dom(`
     <div class="${PAGE_CLASS}">
         <header>
@@ -45,7 +56,7 @@ const [contentElement] = dom(`
             </section>
         </main>
 
-        <!-- Feuerwerk Container -->
+        <!-- Feuerwerk -->
         <div class="fireworks-container">
             <div class="firework"></div>
             <div class="firework"></div>
@@ -58,47 +69,61 @@ const [contentElement] = dom(`
     </div>
 `);
 
+/**
+ * CSS-Stylesheet für die AnimationPage
+ * 
+ * @type {HTMLStyleElement}
+ */
 const [styleElement] = dom(`
     <style data-style-id="${PAGE_CLASS}">
         @import "./animation.css";
     </style>
 `);
 
+/**
+ * Initialisiert die AnimationsPage während der Bootstrap-Phase
+ * Richtet die EventListener für die Animationen und Interaktionen ein
+ */
 function onBootstrap() {
     const kolibri = document.querySelector(`.${PAGE_CLASS} .kolibri-logo-static`);
     const backflipButton = document.querySelector(".backflip-button");
     if (!kolibri || !backflipButton) return;
 
-    // Immediately remove the fly-in class after the animation starts
+    // Entfernt die fly-in Klasse nach 4,35 Sekunden. Ansonsten würde der Kolibri noch ein weiteres Mal hinein fliegen.
     kolibri.addEventListener(
         "animationstart",
         (event) => {
             if (event.animationName === "animation_fly_in") {
-                setTimeout(() => kolibri.classList.remove("fly-in"), 4350); // Ensure the class is removed after the animation starts
+                setTimeout(() => kolibri.classList.remove("fly-in"), 4350); // Versichert, dass die Klasse fly-in nach 4,35 Sekunden entfernt wird
             }
         },
-        { once: true } // Run once to prevent future triggers
+        { once: true } // Wird dadurch nur ein Mal ausgeführt
     );
 
-    // Automatically perform one backflip after flying in
+    // Macht automatisch einen Backflip beim hinein fliegen
     setTimeout(() => {
         triggerBackflip(kolibri);
-    }, 3000); // Matches the fly-in duration (3s)
+    }, 3000); // Genauso lange wie die Fly-Animation dauert
 
-    // Trigger backflip and fireworks on button press
+    // Triggert Backflip und Feuerwerk
     backflipButton.addEventListener("click", () => {
         triggerBackflip(kolibri);
         triggerFireworks();
     });
 }
 
+/**
+ * Triggert eine Backflip-Animation für den Kolibri
+ * 
+ * @param {SVGAnimateElement} kolibri - Kolibri-SVG Element
+ */
 function triggerBackflip(kolibri) {
     if (!kolibri) return;
 
-    // Add the backflip class
+    // Fügt die Backflip-Klasse dem Kolibri hinzu
     kolibri.classList.add("trigger-backflip");
 
-    // Remove the backflip class after animation ends to reset
+    // Entfernt die Backflip-Klasse nach der Animation wieder
     kolibri.addEventListener(
         "animationend",
         (event) => {
@@ -106,10 +131,13 @@ function triggerBackflip(kolibri) {
                 kolibri.classList.remove("trigger-backflip");
             }
         },
-        { once: true } // Run once to prevent future triggers
+        { once: true }
     );
 }
 
+/**
+ * Triggert das Feuerwerk an einer zufälligen Stelle innerhalb des Containers
+ */
 function triggerFireworks() {
     const fireworks = document.querySelectorAll('.firework');
     const container = document.querySelector('.fireworks-container');
@@ -117,17 +145,17 @@ function triggerFireworks() {
     const containerHeight = container.offsetHeight;
 
     fireworks.forEach((firework) => {
-        // Generate random positions within the container
-        const randomX = Math.random() * containerWidth - containerWidth / 2; // Range: -containerWidth/2 to +containerWidth/2
-        const randomY = Math.random() * containerHeight - containerHeight / 2; // Range: -containerHeight/2 to +containerHeight/2
+        // Zufällige Positionen für das Feuerwerk
+        const randomX = Math.random() * containerWidth - containerWidth / 2;
+        const randomY = Math.random() * containerHeight - containerHeight / 2;
 
-        // Apply the random positions via CSS variables
+        // Wendet die zufällige Positionen auf die CSS-Variablen an
         firework.style.setProperty('--x', `${randomX}px`);
         firework.style.setProperty('--y', `${randomY}px`);
 
-        // Restart the animation
-        firework.style.animation = 'none'; // Reset the animation
-        firework.offsetHeight; // Trigger reflow to restart animation
-        firework.style.animation = ''; // Apply the animation again
+        // Resetted die Animation
+        firework.style.animation = 'none'; // Animation resetten
+        firework.offsetHeight; // Trigger-Reflow um die Animation neu starten zu können
+        firework.style.animation = ''; // Animation neu anwenden
     });
 }

@@ -32,10 +32,29 @@ const [contentElement] = dom(`
                 <p>Press the "Backflip" button to make the Kolibri perform a single backflip.</p>
             </section>
             <section class="buttons">
-                <button class="btn primary glow backflip-button">Backflip</button>
-                <a class="btn accent glow" ${href(URI_HASH_HOME)}>Back to Home</a>
+                <button class="btn primary glow backflip-button" onClick="buttonEffect('aKontaktieren')">
+                    <span class="button__span">
+                        <a id="aKontaktieren" class="button__a">Do a Backflip</a>
+                    </span>
+                </button>
+                <button class="btn primary glow backflip-button" onClick="buttonEffect('aKontaktieren')">
+                    <span class="button__span">
+                        <a id="aKontaktieren" class="button__a" ${href(URI_HASH_HOME)}>Back to Home</a>
+                    </span>
+                </button>
             </section>
         </main>
+
+        <!-- Feuerwerk Container -->
+        <div class="fireworks-container">
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+        </div>
     </div>
 `);
 
@@ -66,8 +85,11 @@ function onBootstrap() {
         triggerBackflip(kolibri);
     }, 3000); // Matches the fly-in duration (3s)
 
-    // Trigger backflip on button press
-    backflipButton.addEventListener("click", () => triggerBackflip(kolibri));
+    // Trigger backflip and fireworks on button press
+    backflipButton.addEventListener("click", () => {
+        triggerBackflip(kolibri);
+        triggerFireworks();
+    });
 }
 
 function triggerBackflip(kolibri) {
@@ -88,9 +110,12 @@ function triggerBackflip(kolibri) {
     );
 }
 
-function onPassivate() {
-    const page = document.querySelector(`.${PAGE_CLASS}`);
-    if (page) {
-        page.classList.add("passivate"); // Add the passivate class for fade-out
-    }
+function triggerFireworks() {
+    const fireworks = document.querySelectorAll(".firework");
+    // Remove and re-add the class to restart the animation
+    fireworks.forEach((firework) => {
+        firework.style.animation = "none"; // Reset the animation
+        firework.offsetHeight; // Force reflow to allow the animation to re-trigger
+        firework.style.animation = ""; // Reapply the animation
+    });
 }

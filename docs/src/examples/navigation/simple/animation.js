@@ -23,10 +23,10 @@ const [contentElement] = dom(`
             <div class="prosa kolibri-logo-static fly-in" style="width:clamp(10rem, 30cqw, 20rem);">
                 ${KOLIBRI_LOGO_SVG}
             </div>
-            <h1>Kolibri Backflip Animation</h1>
-            <div class="subtitle">Backflip and Flapping Wings</div>
+            <h1 class="prosa animation-page passivate">Kolibri Backflip Animation</h1>
+            <div class="subtitle prosa animation-page passivate">Backflip and Flapping Wings</div>
         </header>
-        <main class="prosa">
+        <main class="prosa animation-page passivate">
             <section>
                 <h2>Interactive Backflip</h2>
                 <p>Press the "Backflip" button to make the Kolibri perform a single backflip.</p>

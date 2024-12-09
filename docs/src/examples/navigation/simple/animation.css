@@ -67,7 +67,8 @@
 }
 
 /* Fade-out animation for exiting the page */
-.animation-page.passivate .kolibri-logo-static {
+.animation-page.passivate .kolibri-logo-static,
+.animation-page.passivate .prosa {    
     animation: animation_fly_out 2s ease-in forwards;
 }
 
@@ -96,9 +97,20 @@
 }
 
 @keyframes firework {
-    0% { transform: translate(var(--x), var(--initialY)); width: var(--initialSize); opacity: 1; }
-    50% { width: 0.5vmin; opacity: 1; }
-    100% { width: var(--finalSize); opacity: 0; }
+    0% {
+        transform: translate(var(--x), var(--initialY));
+        width: var(--initialSize);
+        opacity: 1;
+    }
+    50% {
+        width: 0.5vmin;
+        opacity: 1;
+    }
+    100% {
+        width: var(--finalSize);
+        opacity: 0;
+        visibility: hidden; /* Ensures the element is not interactable/rendered */
+    }
 }
 
 .firework,
@@ -118,6 +130,7 @@
     --initialY: 60vmin;
     content: "";
     animation: firework 5s;
+    animation-fill-mode: forwards; /* Retain the final state of the animation */
     position: absolute;
     top: 50%;
     left: 50%;

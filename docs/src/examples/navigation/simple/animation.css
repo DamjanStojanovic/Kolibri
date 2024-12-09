@@ -261,9 +261,13 @@ button {
     display: block;
 }
 
-.button a {
-    color: #fff;
-    text-decoration: none;
+button a {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit the button's text color */
+}
+
+button a:hover, button a:focus {
+    text-decoration: none; /* Ensure no underline on hover or focus */
 }
 
 .button__div {

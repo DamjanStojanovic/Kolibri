@@ -69,12 +69,12 @@ function onBootstrap() {
     const backflipButton = document.querySelector(".backflip-button");
     if (!kolibri || !backflipButton) return;
 
-    // Remove the fly-in class after animation ends
+    // Immediately remove the fly-in class after the animation starts
     kolibri.addEventListener(
-        "animationend",
+        "animationstart",
         (event) => {
             if (event.animationName === "animation_fly_in") {
-                kolibri.classList.remove("fly-in"); // Remove fly-in class
+                setTimeout(() => kolibri.classList.remove("fly-in"), 4400); // Ensure the class is removed after the animation starts
             }
         },
         { once: true } // Run once to prevent future triggers

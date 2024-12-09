@@ -181,7 +181,7 @@ const dangerLight       = pink200;
 const dangerBg          = pink100;
 
 const KOLIBRI_LOGO_SVG = `
-<svg class="kolibri-logo-svg" viewBox="0 0 305 342" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg class="kolibri-logo-svg" viewBox="0 0 340 342" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M138 194C183.5 214.5 228 221.5 236.5 341.5C229.5 273.5 187 263.5 138 194Z" fill="#5F2EEA"/>
     <path d="M117 122C117 46 42.5 17 0 0C81.2 39.2 77.5 79.5 80.5 138C87 216.5 128 235.667 150.5 248C105.7 212 117 157 117 122Z" fill="#FE2EA8"/>
     <path d="M80.9999 144.5C81.3468 146.565 81.692 148.581 82.0374 150.552C86.8892 170.965 107.957 211.566 156.5 225.5C210.5 241 236.407 308.5 237.074 342C220.5 279.5 210.346 274.538 156.5 250.5C102.35 226.326 92.1459 208.229 82.0374 150.552C81.492 148.257 81.1515 146.218 80.9999 144.5Z" fill="#BE58FD"/>

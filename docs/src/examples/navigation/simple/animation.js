@@ -20,7 +20,7 @@ const AnimationPage = () => Page({
 const [contentElement] = dom(`
     <div class="${PAGE_CLASS}">
         <header>
-            <div class="kolibri-logo-static fly-in" style="width:clamp(10rem, 30cqw, 20rem);">
+            <div class="prosa kolibri-logo-static fly-in" style="width:clamp(10rem, 30cqw, 20rem);">
                 ${KOLIBRI_LOGO_SVG}
             </div>
             <h1>Kolibri Backflip Animation</h1>

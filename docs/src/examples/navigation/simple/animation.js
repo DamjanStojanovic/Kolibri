@@ -10,7 +10,7 @@ const PAGE_CLASS = "animation-page";
 const AnimationPage = () => Page({
     titleText: "Kolibri Backflip Animation",
     activationMs: 1000,
-    passivationMs: 2000, // Matches the fade-out duration
+    passivationMs: 2000,
     pageClass: PAGE_CLASS,
     styleElement: /** @type { HTMLStyleElement } */ styleElement,
     contentElement: /** @type { HTMLElement } */ contentElement,
@@ -74,7 +74,7 @@ function onBootstrap() {
         "animationstart",
         (event) => {
             if (event.animationName === "animation_fly_in") {
-                setTimeout(() => kolibri.classList.remove("fly-in"), 4400); // Ensure the class is removed after the animation starts
+                setTimeout(() => kolibri.classList.remove("fly-in"), 4350); // Ensure the class is removed after the animation starts
             }
         },
         { once: true } // Run once to prevent future triggers
@@ -111,11 +111,23 @@ function triggerBackflip(kolibri) {
 }
 
 function triggerFireworks() {
-    const fireworks = document.querySelectorAll(".firework");
-    // Remove and re-add the class to restart the animation
+    const fireworks = document.querySelectorAll('.firework');
+    const container = document.querySelector('.fireworks-container');
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+
     fireworks.forEach((firework) => {
-        firework.style.animation = "none"; // Reset the animation
-        firework.offsetHeight; // Force reflow to allow the animation to re-trigger
-        firework.style.animation = ""; // Reapply the animation
+        // Generate random positions within the container
+        const randomX = Math.random() * containerWidth - containerWidth / 2; // Range: -containerWidth/2 to +containerWidth/2
+        const randomY = Math.random() * containerHeight - containerHeight / 2; // Range: -containerHeight/2 to +containerHeight/2
+
+        // Apply the random positions via CSS variables
+        firework.style.setProperty('--x', `${randomX}px`);
+        firework.style.setProperty('--y', `${randomY}px`);
+
+        // Restart the animation
+        firework.style.animation = 'none'; // Reset the animation
+        firework.offsetHeight; // Trigger reflow to restart animation
+        firework.style.animation = ''; // Apply the animation again
     });
 }

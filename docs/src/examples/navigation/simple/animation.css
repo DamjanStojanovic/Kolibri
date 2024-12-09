@@ -129,12 +129,12 @@
     --x: -50%;
     --initialY: 60vmin;
     content: "";
-    animation: firework 5s;
-    animation-fill-mode: forwards; /* Retain the final state of the animation */
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, var(--y));
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
+    animation: firework 5s;
+    animation-fill-mode: forwards;
     width: var(--initialSize);
     aspect-ratio: 1;
     background: 
